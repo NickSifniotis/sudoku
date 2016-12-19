@@ -21,13 +21,13 @@ public abstract class Columnar extends Container
     {
         String res = "";
 
-        for (int i = 0; i < 9; i ++)
+        for (int i = 0; i < NUM_PIECES; i ++)
         {
             if (!res.equals(""))
                 res += ", ";
-            res += _pieces.ToString(i);
+            res += _pieces.ToString(_piece_map[i]);
         }
 
-        return res;
+        return "[ " + res + " ]";
     }
 }

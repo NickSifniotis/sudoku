@@ -90,21 +90,23 @@ public class Sudoku
     public static void main(String[] args)
     {
         Board board = new Board();
+
+        String [] initialBoard = {
+                "......6..",
+                "1,,,7,,,,",
+                "76824..9.",
+                ".9.6.7...",
+                "6...2...5",
+                "...5.4.8.",
+                ".5..98431",
+                "....6...8",
+                "..4......"
+        };
+
+        board.InitialConfiguration(initialBoard);
+
         board.DisplayBoard();
 
-//        Old_Board board = new Old_Board();
-//
-//        String [] initialBoard = {
-//                "......6..",
-//                "1,,,7,,,,",
-//                "76824..9.",
-//                ".9.6.7...",
-//                "6...2...5",
-//                "...5.4.8.",
-//                ".5..98431",
-//                "....6...8",
-//                "..4......"
-//        };
 //
 //        System.out.println("Setting up initial puzzle configuration.");
 //        for (int row = 0; row < 9; row ++)

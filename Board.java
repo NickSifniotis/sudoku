@@ -23,7 +23,21 @@ public class Board
             _rows[iterator] = new Row(iterator, _pieces);
             _cols[iterator] = new Column(iterator, _pieces);
             _blocks[iterator] = new Block(iterator, _pieces);
+
+            _rows[iterator].SetPositions(_pieces.Positions());
         }
+    }
+
+
+    /**
+     * Sets the initial configuration of the sudoku game.
+     *
+     * @param initial An array of strings each representing one row of the game.
+     */
+    public void InitialConfiguration(String[] initial)
+    {
+        for (int i = 0; i < NUM_CONTAINERS; i ++)
+            _rows[i].SetInitialValues(initial[i]);
     }
 
 

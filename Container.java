@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Nick Sifniotis on 19/12/16.
@@ -12,11 +13,13 @@ public abstract class Container
     protected Pieces _pieces;
     protected int[] _piece_map;
     protected final int NUM_PIECES = 9;
+    protected List<Position> _positions;
 
 
     public Container()
     {
         _piece_map = new int[NUM_PIECES];
+        _notified = false;
     }
 
 
@@ -31,6 +34,11 @@ public abstract class Container
         this();
         _pieces = pieces;
         _my_id = id;
+    }
+
+    public void SetPositions(List<Position> positions)
+    {
+        _positions = positions;
     }
 
     public abstract String ToString();
@@ -60,5 +68,35 @@ public abstract class Container
     public String MyId()
     {
         return String.valueOf(_my_id + 1);
+    }
+
+
+    /**
+     * The values bitmap that is stored in the Pieces structure represents the possible candidates on any given
+     * piece. This function inverts that, returning an array of bitmaps that represent which positions
+     * each candidate could potentially be in.
+     *
+     * @return An array of length Positions.length() ints
+     */
+    private int[] _reverse_mapping()
+    {
+        int num_positions = _positions.size();
+
+        int [] res = new int[num_positions];
+        for (int i = 0; i < NUM_PIECES; i ++)
+        {
+            int v = _pieces.Value(_piece_map[i]);      // get the piece map
+            for (int j = 0; j < num_positions; j++)
+                if ((v & _positions.get(j).BINARY) != 0)
+                    res[j] |= _positions.get(i).BINARY;
+        }
+
+        return res;
+    }
+
+
+    private void _partition_set()
+    {
+
     }
 }

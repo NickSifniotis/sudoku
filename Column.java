@@ -19,6 +19,6 @@ public class Column extends Columnar
     @Override
     public String ToString()
     {
-        return "Col " + String.valueOf(_my_id) + ": " + super.ToString();
+        return "Col " + MyId() + ": " + super.ToString();
     }
 }

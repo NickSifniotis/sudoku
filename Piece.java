@@ -26,6 +26,16 @@ public class Piece
     }
 
 
+    public int Value()
+    {
+        return _value;
+    }
+
+    public void SetValue(int value)
+    {
+        _value = value;
+    }
+
     public void RegisterContainer (Container container)
     {
         _containers.add(container);

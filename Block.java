@@ -37,7 +37,7 @@ public class Block extends Container
             {
                 if (!substring.equals(""))
                     substring += ", ";
-                substring += _pieces.ToString(counter);
+                substring += _pieces.ToString(_piece_map[counter]);
                 counter ++;
             }
             substring = "[ " + substring + " ]";
@@ -47,6 +47,6 @@ public class Block extends Container
             res += substring;
         }
 
-        return "Block " + String.valueOf(_my_id) + ": " + res;
+        return "Block " + MyId() + ": " + res;
     }
 }
