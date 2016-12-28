@@ -6,7 +6,6 @@
 public class Utilities
 {
     public static final int NUM_POSITIONS = 9;
-    public static final int [] POSITION = { 0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80, 0x100 };
     public static final int [] [] ROW_TO_CELL_MAP = { {18, 19, 20}, {21, 22, 23}, {24, 25, 26} };
     public static final int [] [] COL_TO_CELL_MAP = { {18, 21, 24}, {19, 22, 25}, {20, 23, 26} };
 
@@ -29,8 +28,8 @@ public class Utilities
     public static String IntToBinaryString (int n)
     {
         String res = "";
-        for (int position : POSITION)
-            res += ((n & position) == 0 ? "0" : "1");
+        for (int position = 0; position < NUM_POSITIONS; position ++)
+            res += ((n & _positions[position].BINARY) == 0 ? "0" : "1");
 
         return res;
     }
@@ -46,8 +45,8 @@ public class Utilities
     {
         int res = 0;
 
-        for (int position: Utilities.POSITION)
-            if ((value_to_check & position) != 0)
+        for (int position = 0; position < NUM_POSITIONS; position ++)
+            if ((value_to_check & _positions[position].BINARY) != 0)
                 res ++;
 
         return res;

@@ -7,59 +7,35 @@ import java.util.List;
  */
 public class Sudoku
 {
-    public static void detect_partition_in_set (Old_Board b, int set_number)
-    {
-        // brute force this search. Go through every element in the power set. It doesn't matter
-        // how many times the same partitions are found.
-
-        for (int i = 1; i < 511; i ++)
-        {
-            int clear_value = 0;
-            for (int j = 0; j < 9; j ++)
-            {
-                if ((i & Utilities.POSITION[j]) != 0)
-                    clear_value = clear_value | b.piece_bitmaps[b.set_mapping[set_number][j]];
-            }
-
-            int num_elements = Utilities.CountHighs(i);
-            int num_numbers = Utilities.CountHighs(clear_value);
-
-            if (num_elements == num_numbers)
-                b.PartitionSet(set_number, i, clear_value);
-            else if (num_numbers < num_elements)
-                System.out.println ("Inconsistent state found.");
-        }
-    }
-
     public static void detect_partition_in_values (Old_Board b, int set_number)
     {
-        // create a reverse mapping
-        int [] reversi = new int[9];
-        for (int i = 0; i < 9; i ++)
-        {
-            int v = b.piece_bitmaps[b.set_mapping[set_number][i]];      // get the piece map
-            for (int j = 0; j < 9; j ++)
-                if ((v & Utilities.POSITION[j]) != 0)
-                    reversi[j] |= Utilities.POSITION[i];
-        }
-
-        for (int i = 1; i < 511; i ++)
-        {
-            int clear_value = 0;
-            for (int j = 0; j < 9; j ++)
-            {
-                if ((i & Utilities.POSITION[j]) != 0)
-                    clear_value = clear_value | reversi[j];
-            }
-
-            int num_elements = Utilities.CountHighs(i);
-            int num_numbers = Utilities.CountHighs(clear_value);
-
-            if (num_elements == num_numbers)
-                b.PartitionSet(set_number, clear_value, i);
-            else if (num_numbers < num_elements)
-                System.out.println ("Inconsistent state found.");
-        }
+//        // create a reverse mapping
+//        int [] reversi = new int[9];
+//        for (int i = 0; i < 9; i ++)
+//        {
+//            int v = b.piece_bitmaps[b.set_mapping[set_number][i]];      // get the piece map
+//            for (int j = 0; j < 9; j ++)
+//                if ((v & Utilities.POSITION[j]) != 0)
+//                    reversi[j] |= Utilities.POSITION[i];
+//        }
+//
+//        for (int i = 1; i < 511; i ++)
+//        {
+//            int clear_value = 0;
+//            for (int j = 0; j < 9; j ++)
+//            {
+//                if ((i & Utilities.POSITION[j]) != 0)
+//                    clear_value = clear_value | reversi[j];
+//            }
+//
+//            int num_elements = Utilities.CountHighs(i);
+//            int num_numbers = Utilities.CountHighs(clear_value);
+//
+//            if (num_elements == num_numbers)
+//                b.PartitionSet(set_number, clear_value, i);
+//            else if (num_numbers < num_elements)
+//                System.out.println ("Inconsistent state found.");
+//        }
     }
 
 
@@ -80,7 +56,6 @@ public class Sudoku
                 System.out.println ("\nProcessing " + Utilities.SetToString(target));
 
                 b.notify_changes[target] = false;
-                detect_partition_in_set(b, target);
                 detect_partition_in_values(b, target);
             }
         }
@@ -107,33 +82,12 @@ public class Sudoku
 
         board.DisplayBoard();
 
-//
-//        System.out.println("Setting up initial puzzle configuration.");
-//        for (int row = 0; row < 9; row ++)
-//            for (int column = 0; column < 9; column ++)
-//            {
-//                char c = initialBoard[row].charAt(column);
-//                if (c >= '1' && c <= '9')
-//                {
-//                    try {
-//                        board.PartitionSet(row, Utilities.POSITION[column], Utilities.POSITION[c - '1']);
-//                    }
-//                    catch (Exception e)
-//                    {
-//                        System.out.println ("Failing where row = " + row  + " col = " + column + " and c equals " + c);
-//                        System.exit(1);
-//                    }
-//                }
-//            }
-//
-//        System.out.println("Starting board: ");
-//        board.PrintBoardState();
-//
-//        System.out.println("\nProcessing ..");
-//        main_loop(board);
-//
-//        System.out.println("\nFinal Solution");
-//        board.PrintBoardState();
+        System.out.println ("Executing loop.");
+
+        while (board.PartitionContainers());
+
+        board.DisplayBoard();
+
 //
 //        for (int colTriplet = 0; colTriplet < 9; colTriplet += 3)
 //        {

@@ -1,4 +1,7 @@
 import java.util.Arrays;
+import java.util.function.BiConsumer;
+import java.util.function.IntFunction;
+
 
 /**
  * Created by Nick Sifniotis on 19/12/16.
@@ -51,6 +54,21 @@ public abstract class Container
         _notified = false;
     }
 
+    /**
+     * Split my self up into as many partitions as possible.
+     */
+    public void Partition()
+    {
+        if (!_notified)
+            return;
+
+        _find_partition(candidate -> _reverse_mapping(candidate),
+                (combo, clear_value) ->_partition_set(clear_value, combo));
+
+        _find_partition(position -> _pieces.Value(_piece_map[position]),
+                (combo, clear_value) -> _partition_set(combo, clear_value));
+    }
+
 
     /**
      * Returns a stringy representation of this container's ID within its container set.
@@ -69,19 +87,16 @@ public abstract class Container
      * piece. This function inverts that, returning an array of bitmaps that represent which positions
      * each candidate could potentially be in.
      *
-     * @return An array of length Positions.length() ints
+     * @return A bitmap of potential pieces that candidate could be in, within this container.
      */
-    private int[] _reverse_mapping()
+    private int _reverse_mapping(int candidate)
     {
-        int num_positions = Utilities.NUM_POSITIONS;
-
-        int [] res = new int[num_positions];
+        int res = 0;
         for (int i = 0; i < NUM_PIECES; i ++)
         {
             int v = _pieces.Value(_piece_map[i]);      // get the piece map
-            for (int j = 0; j < num_positions; j++)
-                if ((v & Utilities.Position(j).BINARY) != 0)
-                    res[j] |= Utilities.Position(i).BINARY;
+            if ((v & Utilities.Position(candidate).BINARY) != 0)
+                res |= Utilities.Position(i).BINARY;
         }
 
         return res;
@@ -109,8 +124,37 @@ public abstract class Container
                             ? inverse_values
                             : values);
 
+            _pieces.SetValue(map_pos, value);
             if (value != original_value)
                 _pieces.Notify(map_pos, this);
+        }
+    }
+
+
+    /**
+     * Datasource could point to Utilities.Position(), or to the reverse mapping, or
+     * to any other function that accepts an int between 1 and 9 and returns some
+     * other int.
+     *
+     * @param dataSource The function that provides the bitmap data to process.
+     * @param partitionFunction The function call to _partition_set
+     */
+    private void _find_partition(IntFunction<Integer> dataSource, BiConsumer<Integer, Integer> partitionFunction)
+    {
+        for (int combo = 1; combo < 511; combo ++)
+        {
+            int clear_value = 0;
+            for (int position = 0; position < Utilities.NUM_POSITIONS; position ++)
+                if ((combo & Utilities.Position(position).BINARY) != 0)
+                    clear_value = clear_value | dataSource.apply(position);
+
+            int num_elements = Utilities.CountHighs(combo);
+            int num_numbers = Utilities.CountHighs(clear_value);
+
+            if (num_elements == num_numbers)
+                partitionFunction.accept(combo, clear_value);
+            else if (num_numbers < num_elements)
+                System.out.println ("Inconsistent state found.");
         }
     }
 }

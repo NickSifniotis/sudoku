@@ -72,4 +72,47 @@ public class Board
         for (Container c: displayMe)
             System.out.println (c.ToString());
     }
+
+
+    /**
+     * Iterates through all the containers on the board, and updates any that have
+     * received a notification of a state change.
+     *
+     * @return True if any container had received a notification, false otherwise.
+     */
+    public boolean PartitionContainers()
+    {
+        boolean res;
+
+        res  = _partition_containers(_rows);
+        res |= _partition_containers(_cols);
+        res |= _partition_containers(_blocks);
+
+        return res;
+    }
+
+
+    /**
+     * Iterates through every container in set, and updating them if they had been
+     * notified of a change.
+     *
+     * @param set The set of containers to update.
+     * @return True if one or more were updated, false if none were.
+     */
+    private boolean _partition_containers(Container[] set)
+    {
+        boolean res = false;
+
+        for (int i = 0; i < NUM_CONTAINERS; i ++)
+        {
+            if (set[i].Notified())
+            {
+                res = true;
+                set[i].Partition();
+                set[i].ClearNotify();
+            }
+        }
+
+        return res;
+    }
 }

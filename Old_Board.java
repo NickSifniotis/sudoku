@@ -92,7 +92,7 @@ public class Old_Board
                 if (Utilities.CountHighs(n) == 1)
                 {
                     for (int state = 0; state < 9; state ++)
-                        if (Utilities.POSITION[state] == n)
+                        if (Utilities.Position(state).BINARY == n)
                             System.out.printf ("%2d  ", state + 1);
                 }
                 else
