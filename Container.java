@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Nick Sifniotis on 19/12/16.
@@ -13,7 +12,6 @@ public abstract class Container
     protected Pieces _pieces;
     protected int[] _piece_map;
     protected final int NUM_PIECES = 9;
-    protected List<Position> _positions;
 
 
     public Container()
@@ -34,11 +32,6 @@ public abstract class Container
         this();
         _pieces = pieces;
         _my_id = id;
-    }
-
-    public void SetPositions(List<Position> positions)
-    {
-        _positions = positions;
     }
 
     public abstract String ToString();
@@ -80,23 +73,44 @@ public abstract class Container
      */
     private int[] _reverse_mapping()
     {
-        int num_positions = _positions.size();
+        int num_positions = Utilities.NUM_POSITIONS;
 
         int [] res = new int[num_positions];
         for (int i = 0; i < NUM_PIECES; i ++)
         {
             int v = _pieces.Value(_piece_map[i]);      // get the piece map
             for (int j = 0; j < num_positions; j++)
-                if ((v & _positions.get(j).BINARY) != 0)
-                    res[j] |= _positions.get(i).BINARY;
+                if ((v & Utilities.Position(j).BINARY) != 0)
+                    res[j] |= Utilities.Position(i).BINARY;
         }
 
         return res;
     }
 
 
-    private void _partition_set()
+    /**
+     * Tricky stuff. From each element in this set, remove all entries from values if
+     * the element does not appear in the partition set, and remove all entries not in values
+     * if the element does appear in the partition set.
+     *
+     * @param partition The partition bitmap. High values represent elements within the partition.
+     * @param values The values bitmap. Partition elements may only contain these values; non-partition
+     *               elements may contain anything but these values.
+     */
+    private void _partition_set(int partition, int values)
     {
+        int inverse_values = ~values;
+        for (int i = 0; i < 9; i ++)
+        {
+            int map_pos = _piece_map[i];
+            int original_value = _pieces.Value(map_pos);
+            int value = original_value &
+                    (((partition & Utilities.Position(i).BINARY) == 0)
+                            ? inverse_values
+                            : values);
 
+            if (value != original_value)
+                _pieces.Notify(map_pos, this);
+        }
     }
 }

@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by Nick Sifniotis on 19/12/16.
  *
@@ -10,17 +7,12 @@ public class Pieces
 {
     private static final int   NUM_PIECES = 81;
     private Piece[] _pieces;
-    private List<Position> _positions;
 
     public Pieces()
     {
-        _positions = new ArrayList<>();
-        for (int i = 0; i < 9; i ++)
-            _positions.add(new Position(0x1 << i, i + 1));
-
         _pieces = new Piece[NUM_PIECES];
         for (int i = 0; i < NUM_PIECES; i ++)
-            _pieces[i] = new Piece(_positions);
+            _pieces[i] = new Piece();
     }
 
     public int Value(int pieceNum)
@@ -41,6 +33,11 @@ public class Pieces
     }
 
 
+    public void Notify(int pieceNum, Container container)
+    {
+        _pieces[pieceNum].Notify(container);
+    }
+
     public void RegisterContainer(Container container, int pieceNumber)
     {
         _pieces[pieceNumber].RegisterContainer(container);
@@ -50,10 +47,5 @@ public class Pieces
     public String ToString(int piece)
     {
         return _pieces[piece].ToString();
-    }
-
-    public List<Position> Positions()
-    {
-        return _positions;
     }
 }

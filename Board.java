@@ -23,8 +23,6 @@ public class Board
             _rows[iterator] = new Row(iterator, _pieces);
             _cols[iterator] = new Column(iterator, _pieces);
             _blocks[iterator] = new Block(iterator, _pieces);
-
-            _rows[iterator].SetPositions(_pieces.Positions());
         }
     }
 

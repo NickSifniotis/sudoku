@@ -5,6 +5,7 @@
  */
 public class Utilities
 {
+    public static final int NUM_POSITIONS = 9;
     public static final int [] POSITION = { 0x1, 0x2, 0x4, 0x8, 0x10, 0x20, 0x40, 0x80, 0x100 };
     public static final int [] [] ROW_TO_CELL_MAP = { {18, 19, 20}, {21, 22, 23}, {24, 25, 26} };
     public static final int [] [] COL_TO_CELL_MAP = { {18, 21, 24}, {19, 22, 25}, {20, 23, 26} };
@@ -12,6 +13,12 @@ public class Utilities
     public static final int [] ROWS  = {  0,  1,  2,  3,  4,  5,  6,  7,  8 };
     public static final int [] COLS  = {  9, 10, 11, 12, 13, 14, 15, 16, 17 };
     public static final int [] CELLS = { 18, 19, 20, 21, 22, 23, 24, 25, 26 };
+
+    /**
+     * Private static members, to enforce read-only access to this data.
+     */
+    private static boolean initialised = false;
+    private static Position [] _positions;
 
     /**
      * Converts an integer n into a string of its binary representation.
@@ -71,5 +78,32 @@ public class Utilities
             }
             System.out.println();
         }
+    }
+
+
+    /**
+     * Accessor methods for the dynamically generated read only data.
+     */
+    public static Position Position(int positionNum)
+    {
+        _initialise();
+
+        return _positions[positionNum];
+    }
+
+
+    /**
+     * Private initialisation method to set the global read-only data.
+     */
+    private static void _initialise()
+    {
+        if (initialised)
+            return;
+
+        _positions = new Position[NUM_POSITIONS];
+        for (int position = 0; position < NUM_POSITIONS; position ++)
+            _positions[position] = new Position(0x1 << position, position + 1);
+
+        initialised = true;
     }
 }

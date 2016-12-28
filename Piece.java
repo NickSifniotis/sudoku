@@ -10,17 +10,14 @@ public class Piece
 {
     private int _value;
     private List<Container> _containers;
-    private List<Position> _positions;
 
 
-    public Piece(List<Position> positions)
+    public Piece()
     {
-        _positions = positions;
-
         // Generate the initial value
         _value = 0;
-        for (Position position: _positions)
-            _value |= position.BINARY;
+        for (int position = 0; position < Utilities.NUM_POSITIONS; position ++)
+            _value |= Utilities.Position(position).BINARY;
 
         _containers = new ArrayList<>();
     }
@@ -70,8 +67,8 @@ public class Piece
     public String ToString()
     {
         String res = "";
-        for (Position position : _positions)
-            res += ((_value & position.BINARY) == 0 ? "." : position.DECIMAL);
+        for (int position = 0; position < Utilities.NUM_POSITIONS; position ++)
+            res += ((_value & Utilities.Position(position).BINARY) == 0 ? "." : Utilities.Position(position).DECIMAL);
 
         return res;
     }

@@ -35,17 +35,21 @@ public class Row extends Columnar
 
         for (int i = 0; i < NUM_PIECES; i ++)
         {
-            char c = values.charAt(i);
-            if (c >= '0' && c <= '9')
+            String c = values.substring(i, i + 1);
+            int value = 0;
+            try
             {
-                int binary = 0;
-                for (Position position: _positions)
-                    if (position.DECIMAL.equals(String.valueOf(c)))
-                        binary |= position.BINARY;
+                value = Integer.parseInt(c);
+            }
+            catch (NumberFormatException e)
+            {
+                // Do nothing, this is ok.
+            }
 
-                _pieces.SetValue(_piece_map[i], binary);
-                _pieces.Notify(_piece_map[i]);
-                System.out.println (_piece_map[i]);
+            if (value >= 1 && value <= 9)
+            {
+                _pieces.SetValue (_piece_map[i], Utilities.Position(value - 1).BINARY);
+                _pieces.Notify   (_piece_map[i]);
             }
         }
     }
