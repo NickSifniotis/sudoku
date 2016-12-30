@@ -19,6 +19,6 @@ public class Column extends Columnar
     @Override
     public String ToString()
     {
-        return "Col " + MyId() + ": " + super.ToString();
+        return ColorCodes.WHITE + "Col " + MyId() + ": " + super.ToString();
     }
 }

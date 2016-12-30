@@ -23,11 +23,15 @@ public abstract class Columnar extends Container
 
         for (int i = 0; i < NUM_PIECES; i ++)
         {
+            String colour = (Utilities.CountHighs(_pieces.Value(_piece_map[i])) == 1)
+                    ? ColorCodes.YELLOW
+                    : ColorCodes.GREEN;
+
             if (!res.equals(""))
                 res += ", ";
-            res += _pieces.ToString(_piece_map[i]);
+            res += colour + _pieces.ToString(_piece_map[i]);
         }
 
-        return "[ " + res + " ]";
+        return ColorCodes.WHITE + "[ " + res + ColorCodes.WHITE + " ]";
     }
 }

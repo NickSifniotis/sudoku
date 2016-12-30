@@ -19,7 +19,7 @@ public class Row extends Columnar
     @Override
     public String ToString()
     {
-        return "Row " + MyId() + ": " + super.ToString();
+        return ColorCodes.WHITE + "Row " + MyId() + ": " + super.ToString();
     }
 
 
