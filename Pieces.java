@@ -43,7 +43,6 @@ public class Pieces
         _pieces[pieceNumber].RegisterContainer(container);
     }
 
-
     public String ToString(int piece)
     {
         return _pieces[piece].ToString();

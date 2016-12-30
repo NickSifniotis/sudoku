@@ -7,86 +7,32 @@ import java.util.List;
  */
 public class Sudoku
 {
-    public static void detect_partition_in_values (Old_Board b, int set_number)
-    {
-//        // create a reverse mapping
-//        int [] reversi = new int[9];
-//        for (int i = 0; i < 9; i ++)
-//        {
-//            int v = b.piece_bitmaps[b.set_mapping[set_number][i]];      // get the piece map
-//            for (int j = 0; j < 9; j ++)
-//                if ((v & Utilities.POSITION[j]) != 0)
-//                    reversi[j] |= Utilities.POSITION[i];
-//        }
-//
-//        for (int i = 1; i < 511; i ++)
-//        {
-//            int clear_value = 0;
-//            for (int j = 0; j < 9; j ++)
-//            {
-//                if ((i & Utilities.POSITION[j]) != 0)
-//                    clear_value = clear_value | reversi[j];
-//            }
-//
-//            int num_elements = Utilities.CountHighs(i);
-//            int num_numbers = Utilities.CountHighs(clear_value);
-//
-//            if (num_elements == num_numbers)
-//                b.PartitionSet(set_number, clear_value, i);
-//            else if (num_numbers < num_elements)
-//                System.out.println ("Inconsistent state found.");
-//        }
-    }
-
-
-    public static void main_loop(Old_Board b)
-    {
-        boolean done = false;
-        do
-        {
-            int target = -1;
-            for (int i = 0; i < 27 && target == -1; i ++)
-                if (b.notify_changes[i])
-                    target = i;
-
-            if (target == -1)
-                done = true;
-            else
-            {
-                System.out.println ("\nProcessing " + Utilities.SetToString(target));
-
-                b.notify_changes[target] = false;
-                detect_partition_in_values(b, target);
-            }
-        }
-        while (!done);
-    }
-
     public static void main(String[] args)
     {
         Board board = new Board();
 
         String [] initialBoard = {
-                "......6..",
-                "1,,,7,,,,",
-                "76824..9.",
-                ".9.6.7...",
-                "6...2...5",
-                "...5.4.8.",
-                ".5..98431",
-                "....6...8",
-                "..4......"
+                "...4..6.2",
+                "..6...1..",
+                ".9.5...8.",
+                ".5.3.....",
+                "3.12.64.5",
+                ".....7.2.",
+                ".3...2.6.",
+                "..4...9..",
+                "5.7..9..."
         };
 
         board.InitialConfiguration(initialBoard);
 
         board.DisplayBoard();
 
-        System.out.println ("Executing loop.");
+        System.out.println("Executing loop.");
 
         while (board.PartitionContainers());
 
         board.DisplayBoard();
+
 
 //
 //        for (int colTriplet = 0; colTriplet < 9; colTriplet += 3)

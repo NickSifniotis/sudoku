@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.IntFunction;
 
@@ -35,6 +37,15 @@ public abstract class Container
         this();
         _pieces = pieces;
         _my_id = id;
+    }
+
+    public List<Integer> Map()
+    {
+        List<Integer> res = new ArrayList<>();
+        for (int value: _piece_map)
+            res.add(value);
+
+        return res;
     }
 
     public abstract String ToString();

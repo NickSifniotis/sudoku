@@ -35,17 +35,7 @@ public class Row extends Columnar
 
         for (int i = 0; i < NUM_PIECES; i ++)
         {
-            String c = values.substring(i, i + 1);
-            int value = 0;
-            try
-            {
-                value = Integer.parseInt(c);
-            }
-            catch (NumberFormatException e)
-            {
-                // Do nothing, this is ok.
-            }
-
+            int value = values.charAt(i) - '0';
             if (value >= 1 && value <= 9)
             {
                 _pieces.SetValue (_piece_map[i], Utilities.Position(value - 1).BINARY);

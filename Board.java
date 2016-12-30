@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Created by Nick Sifniotis on 19/12/16.
  *
@@ -113,6 +117,32 @@ public class Board
             }
         }
 
+        return res;
+    }
+
+
+    /**
+     * Returns a list of every piece which is found in each of the given containers
+     *
+     * @param containers An array of containers to search through.
+     * @return A list of pieces that is common to all those containers.
+     */
+    private List<Integer> _get_container_union(Container[] containers)
+    {
+        List<Integer> res = containers[0].Map();
+
+        for (int i = 1; i < containers.length; i ++)
+        {
+            Container container = containers[i];
+            List<Integer> newList = new ArrayList<>();
+            for (Integer piece: res)
+            {
+                for (int mapPiece: container.Map())
+                    if (piece == mapPiece)
+                        newList.add(mapPiece);
+            }
+            res = newList;
+        }
         return res;
     }
 }
